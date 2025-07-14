@@ -1,3 +1,4 @@
+import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import QrCodes from "./components/QrCodes";
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <Hero />
       <QrCodes />
+      <Footer />
     </>
   );
 }
