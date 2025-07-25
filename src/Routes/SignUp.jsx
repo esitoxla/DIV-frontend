@@ -39,12 +39,12 @@ const SignUp = () => {
             <span class="font-bold text-md">Forgot password</span>
           </div>
           <button
-            class="w-full bg-black text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300"
+            class="w-full bg-blue-600 text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300"
           >
             Sign Up
           </button>
           <button
-            class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
+            class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-blue-600 hover:text-white"
           >
             <img src="google.svg" alt="img" class="w-6 h-6 inline mr-2" />
             Sign Up with Google
