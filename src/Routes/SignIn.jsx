@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router'
 
 
 const SignIn = () => {
@@ -51,7 +52,7 @@ const SignIn = () => {
           </button>
           <div class="text-center text-gray-400">
             Dont'have an account?
-            <span class="font-bold text-black">Sign up for free</span>
+            <span class="font-bold text-black"><NavLink to="/signup">Sign up for free</NavLink></span>
           </div>
         </div>
       </div>

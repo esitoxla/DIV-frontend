@@ -3,7 +3,7 @@ import { FaGoogle, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 text-gray-800 p-6">
+    <footer className="bg-blue-100 text-gray-800 p-6">
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
 
         {/* Description + Socials */}

@@ -19,14 +19,14 @@ export default function Navbar() {
         <div className="w-3/4 hidden md:block">
           <div className=" flex justify-around">
             <ul className="flex items-center gap-8 font-medium text-gray-700 cursor-pointer ">
-              <li><NavLink to="/about">About</NavLink></li>
-              <li><NavLink to="/faqs">FAQs</NavLink></li>
+              <li><NavLink to="/">About</NavLink></li>
+              <li><NavLink to="/">FAQs</NavLink></li>
               <li><NavLink to="/blogs">Blogs</NavLink></li>
               <li><NavLink to="/pricingpage">Pricing</NavLink></li>
             </ul>
 
             <div className="flex gap-3 text-[20px] cursor-pointer pl-10">
-              <button className="text-gray-700"><NavLink to="/login">Login</NavLink></button>
+              <button className="text-gray-700"><NavLink to="/signup">Login</NavLink></button>
               <button className="border px-3 py-1 bg-blue-400 text-white rounded-sm">
                 <NavLink to="/signin">Sign in</NavLink>
               </button>

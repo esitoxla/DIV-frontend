@@ -2,6 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router";  // Correcte
 import LayOut from "./LayOut/LayOutPage";  // Corrected the layout import to use the correct name
 import LandingPage from "./Routes/LandingPage";  // Corrected the import path for LandingPage
 import PricingPage from "./pages/PricingPage";
+import BlogPage from './pages/BlogPage'
+import SignUp from "./Routes/SignUp";
+import SignIn from "./Routes/SignIn";
+
 
 let router = createBrowserRouter([
   {
@@ -16,7 +20,19 @@ let router = createBrowserRouter([
       {
         path: "/pricingpage",  // Fixed the path to remove the leading slash
         element: <PricingPage />,  // Corrected 'Component' to 'element'
-      }
+      },
+        {
+            path: "/signup",
+            element: <SignUp />
+          },
+          {
+            path:"/signin",
+            element: <SignIn />
+          },
+        {
+          path: "/blogs",
+          element: <BlogPage />
+        }
     ]
   }
 ]);
