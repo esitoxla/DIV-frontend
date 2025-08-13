@@ -11,6 +11,11 @@ export default function QrAction() {
           <p>Generate, customize, and download QR Instantly,</p>
           <p>free and easy to use!</p>
         </p>
+        <div className="">
+          <button className="border-0 rounded-sm px-6 py-3 bg-white text-black font-medium mr-5">
+            Generate Now
+          </button>
+          <button className="border border-white rounded-sm px-6 py-3 font-medium">
         <div className="flex gap-2 items-center justify-center">
           <button className="border-0 rounded-sm lg:px-6 py-3 bg-white text-black font-medium mr-5">
             Generate Now
