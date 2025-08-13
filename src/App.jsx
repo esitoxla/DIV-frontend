@@ -42,6 +42,7 @@ function App() {
     <RouterProvider router={router}>
       {/* Removed LayOut since it's now provided through the router */}
     </RouterProvider>
+
   );
 }
 
