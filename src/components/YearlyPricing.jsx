@@ -1,11 +1,6 @@
 import React from 'react'
-
-
-export default function YearlyPricing() {
-  return (
-    <div>YearlyPricing</div>
-
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
+
 
 export default function YearlyPricing() {
   return (
