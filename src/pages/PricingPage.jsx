@@ -4,6 +4,7 @@ import MonthlyPricing from '../components/MonthlyPricing';
 import YearlyPricing from '../components/YearlyPricing';
 
 import { useState } from 'react';
+import Footer from '../components/Footer';
 
 export default function PricingPage() {
     const [activePlan, setActivePlan] = useState("monthly");
