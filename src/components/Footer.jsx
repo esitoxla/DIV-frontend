@@ -1,3 +1,6 @@
+
+import React from "react";
+import { FaGoogle, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 import React from 'react';
 import { FaGoogle, FaLinkedin, FaTwitter, FaInstagram } from 'react-icons/fa';
 
@@ -5,6 +8,25 @@ const Footer = () => {
   return (
     <footer className="bg-blue-100 text-gray-800 p-6">
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
+        {/* Description + Socials */}
+        <div className="flex-1">
+          <p className="mb-4 text-sm leading-relaxed max-w-xs">
+            Your reliable QR code generator for all your needs. Easily create,
+            customize, and manage QR codes for various purposes.
+          </p>
+          <ul className="flex gap-4 text-xl">
+            <li className="bg-white rounded-full p-2 shadow hover:scale-105 transition">
+              <FaGoogle />
+            </li>
+            <li className="bg-white rounded-full p-2 shadow hover:scale-105 transition">
+              <FaTwitter />
+            </li>
+            <li className="bg-white rounded-full p-2 shadow hover:scale-105 transition">
+              <FaInstagram />
+            </li>
+            <li className="bg-white rounded-full p-2 shadow hover:scale-105 transition">
+              <FaLinkedin />
+            </li>
 
         {/* Description + Socials */}
         <div className="flex-1">
@@ -61,6 +83,13 @@ const Footer = () => {
             <li>Cookie</li>
           </ul>
         </div>
+
+      </div>
+    </footer>
+  );
+};
+
+
 
       </div>
     </footer>

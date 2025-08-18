@@ -1,0 +1,58 @@
+import React from "react";
+import { NavLink } from "react-router";
+
+const SignUp = () => {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
+        {/* left side */}
+        <div className="flex flex-col justify-center p-8 md:p-14">
+          <span class="mb-3 text-4xl font-bold">Sign Up</span>
+          <span class="font-light text-gray-400 mb-8">
+            Exciting to have you here! Please enter your details
+          </span>
+          <div class="py-4">
+            <span class="mb-2 text-md">Email</span>
+            <input
+              type="text"
+              class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              name="email"
+              id="email"
+            />
+          </div>
+          <div class="py-4">
+            <span class="mb-2 text-md">Password</span>
+            <input
+              type="password"
+              name="pass"
+              id="pass"
+              class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+            />
+          </div>
+          <div class="flex justify-between w-full py-4">
+            <div class="mr-24">
+              <input type="checkbox" name="ch" id="ch" class="mr-2" />
+              <span class="text-md">Remember me</span>
+            </div>
+            <span class="font-bold text-md">Forgot password</span>
+          </div>
+          <button class="w-full bg-blue-600 text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300">
+            Sign Up
+          </button>
+          <button class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-blue-600 hover:text-white">
+            <img src="google.svg" alt="img" class="w-6 h-6 inline mr-2" />
+            Sign Up with Google
+          </button>
+          <div class="text-center text-gray-400">
+            Dont'have an account?
+            <span class="font-bold text-black">
+              <NavLink to="/signin">Sign in</NavLink>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;
