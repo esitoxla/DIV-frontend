@@ -1,4 +1,4 @@
-import { button, label } from "framer-motion/client";
+// import { button, label } from "framer-motion/client";
 import React from "react";
 
 const tabItems = [
@@ -25,4 +25,5 @@ export default function PricingTab({ activePlan, changeTab }) {
     </div>
   );
 }
+
 

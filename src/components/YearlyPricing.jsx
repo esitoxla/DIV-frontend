@@ -1,6 +1,7 @@
 import React from 'react'
 import { IoCheckmarkCircleOutline } from 'react-icons/io5';
 
+
 export default function YearlyPricing() {
   return (
     <div className="lg:px-10 grid lg:grid-cols-3 grid-cols-1 items-center justify-content-center gap-6 my-8 px-8">
