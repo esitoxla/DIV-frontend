@@ -9,7 +9,7 @@ export default function Blogs() {
 
   return (
     <>
-      <h3 className="font-bold text-4xl text-center pt-8">Our Blog</h3>
+      <h3 className="font-bold text-4xl text-center pt-8">Our Blogs</h3>
       <div className="flex justify-center px-8 mt-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full">
           {previewBlogs.map((blog) => (
