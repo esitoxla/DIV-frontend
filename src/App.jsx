@@ -1,4 +1,3 @@
-
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -20,7 +19,10 @@ import QRCodeGenerator from "./components/QrCodeGenerator";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import AuthLayout from "./Layouts/AuthLayout";
-
+import Profile from "./pages/Profile";
+import QrCodeModal from "./pages/QrCodeModal";
+import QrCodeLayout from "./Layouts/QrCodeLayout";
+import Settings from "./pages/Settings";
 
 function App() {
   const router = createBrowserRouter([
@@ -53,11 +55,15 @@ function App() {
       children: [
         {
           path: "myqrcodes",
-          Component: QrCodesPage,
+          Component: QrCodeLayout,
           children: [
             {
+              index: true,
+              Component: QrCodesPage,
+            },
+            {
               path: "create",
-              Component: QRCodeGenerator,
+              Component: QrCodeModal,
             },
           ],
         },
@@ -69,6 +75,15 @@ function App() {
           path: "price",
           Component: PricingPage,
         },
+        {
+          path: "profile",
+          Component: Profile,
+        },
+        {
+          path: "settings",
+          Component: Settings,
+        },
+
       ],
     },
     {
@@ -89,7 +104,6 @@ function App() {
 
   //
   return <RouterProvider router={router} />;
-
 }
 
 export default App;

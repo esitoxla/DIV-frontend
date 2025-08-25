@@ -26,7 +26,7 @@ export default function AnalyticsIntro() {
           ["Total Scans", 234],
           ["Folders", 12],
         ].map(([label, count], index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow border">
+          <div key={index} className="bg-white p-4 rounded-lg border border-blue-300">
             <p className="text-sm text-gray-500">{label}</p>
             <p className="text-2xl font-bold">{count}</p>
           </div>

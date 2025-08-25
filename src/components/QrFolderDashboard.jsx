@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, NavLink } from "react-router";
 
 const folders = [
   {
@@ -22,10 +23,12 @@ const QRFolderDashboard = () => {
           <h1 className="text-2xl font-semibold text-gray-800">Mr QR Codes</h1>
           <p className="text-sm text-gray-500">Browse all QR Codes</p>
         </div>
-        
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-          + Create QR Code
-        </button>
+
+        <NavLink to="create">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+            + Create QR Code
+          </button>
+        </NavLink>
       </div>
 
       {/* Search Input */}
@@ -42,7 +45,7 @@ const QRFolderDashboard = () => {
         {folders.map((folder, index) => (
           <div
             key={index}
-            className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition"
+            className="bg-white border border-blue-300 rounded-lg p-4 hover:shadow-md transition"
           >
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-2">
@@ -59,7 +62,7 @@ const QRFolderDashboard = () => {
         ))}
 
         {/* Create New Folder */}
-        <div className="bg-white border rounded-lg p-4 flex items-center justify-center cursor-pointer hover:shadow-md transition">
+        <div className="bg-white border border-blue-300 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:shadow-md transition">
           <div className="text-center text-blue-600">
             <div className="text-3xl">📁</div>
             <div className="text-sm mt-1 font-medium">+ Create new folder</div>

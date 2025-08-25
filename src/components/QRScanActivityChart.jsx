@@ -45,7 +45,7 @@ const QRScanActivityChart = () => {
   const [timeRange, setTimeRange] = useState("Last 12 days");
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 max-w-4xl mx-auto">
+    <div className="bg-white rounded-xl shadow p-6 w-[95%] mx-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">QR Code scan activities</h2>
