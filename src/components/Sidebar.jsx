@@ -11,10 +11,10 @@ export default function Sidebar({ toggleSidebar }) {
     <>
       <div
         className="
-        text-gray-600 border-r border-gray-200
-        w-64 p-4 h-full flex flex-col gap-6 py-6
-        fixed sm:static top-0 left-0 bg-white
-        sm:w-64 sm:h-auto z-50
+         fixed top-0 left-0
+         text-gray-600 border-r border-gray-200
+          w-64 p-4 h-screen flex flex-col gap-6 py-6
+          bg-white z-50 overflow-y-auto
       "
       >
         <div className="sm:hidden flex justify-end">
@@ -63,12 +63,20 @@ export default function Sidebar({ toggleSidebar }) {
 
         <div className="border-b p-0 border-gray-200 py-4 "></div>
 
-        <div className="flex gap-2 items-center text-gray-600 cursor-pointer px-4 py-6">
-          <span className="text-2xl text-black">
-            <CiSettings />
-          </span>
-          <p>Settings</p>
-        </div>
+        <NavLink to="settings">
+          {({ isActive }) => (
+            <div
+              className={`flex gap-2 items-center px-4 py-2 ${
+                isActive ? "bg-blue-100 text-blue-700 rounded" : "text-gray-600"
+              }`}
+            >
+              <span className="text-2xl">
+                <FiBarChart2 />
+              </span>
+              <p>Settings</p>
+            </div>
+          )}
+        </NavLink>
 
         <div className="bg-blue-600 text-white p-3 rounded flex flex-col gap-3 ">
           <span className="text-2xl p-1 border-0  rounded w-[2rem] bg-blue-500">
