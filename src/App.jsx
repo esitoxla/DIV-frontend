@@ -23,6 +23,8 @@ import Profile from "./pages/Profile";
 import QrCodeModal from "./pages/QrCodeModal";
 import QrCodeLayout from "./Layouts/QrCodeLayout";
 import Settings from "./pages/Settings";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const router = createBrowserRouter([
@@ -103,7 +105,12 @@ function App() {
   ]);
 
   //
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
+  );
 }
 
 export default App;

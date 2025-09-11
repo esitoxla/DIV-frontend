@@ -1,52 +1,182 @@
-import React from "react";
-import { NavLink } from "react-router";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../store/features/auth-thunks";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [userDetails, setUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    businessName:"",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  async function handleRegister(e) {
+    e.preventDefault();
+
+    const {
+      firstName,
+      lastName,
+      businessName,
+      email,
+      password,
+      confirmPassword,
+    } = userDetails;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !businessName ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
+     return toast.error("All the fields are required");
+    }
+
+    dispatch(
+      registerUser({
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        businessName: userDetails.businessName,
+        email: userDetails.email, 
+        password: userDetails.password,
+        confirmPassword: userDetails.confirmPassword
+       }) 
+    );
+
+     toast.success("You have signed up successfully!");
+     navigate("/auth/login")
+  }
+
+
+
+
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
+      <div className="relative flex flex-col m-6 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
         {/* left side */}
-        <div className="flex flex-col justify-center p-8 md:p-14">
-          <span class="mb-3 text-4xl font-bold">Sign Up</span>
-          <span class="font-light text-gray-400 mb-8">
+        <div className="flex flex-col justify-center p-8 md:p-14 w-full">
+          <span className="mb-3 text-4xl font-bold">Sign Up</span>
+          <span className="font-light text-gray-400 mb-8">
             Exciting to have you here! Please enter your details
           </span>
-          <div class="py-4">
-            <span class="mb-2 text-md">Email</span>
-            <input
-              type="text"
-              class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-              name="email"
-              id="email"
-            />
-          </div>
-          <div class="py-4">
-            <span class="mb-2 text-md">Password</span>
-            <input
-              type="password"
-              name="pass"
-              id="pass"
-              class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-            />
-          </div>
-          <div class="flex justify-between w-full py-4">
-            <div class="mr-24">
-              <input type="checkbox" name="ch" id="ch" class="mr-2" />
-              <span class="text-md">Remember me</span>
+
+          {/* First & Last Name Row */}
+          <form onSubmit={handleRegister}>
+            <div className="flex flex-col md:flex-row md:space-x-6">
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">First Name</span>
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.firstName}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      firstName: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">Last Name</span>
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.lastName}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      lastName: e.target.value,
+                    })
+                  }
+                />
+              </div>
             </div>
-            <span class="font-bold text-md">Forgot password</span>
-          </div>
-          <button class="w-full bg-blue-600 text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300">
-            Sign Up
-          </button>
-          <button class="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-blue-600 hover:text-white">
-            <img src="google.svg" alt="img" class="w-6 h-6 inline mr-2" />
-            Sign Up with Google
-          </button>
-          <div class="text-center text-gray-400">
-            Dont'have an account?
-            <span class="font-bold text-black">
-              <NavLink to="/signin">Sign in</NavLink>
+            <div className="flex flex-col md:flex-row md:space-x-6">
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">Business Name</span>
+                <input
+                  type="text"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.businessName}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      businessName: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">Email</span>
+                <input
+                  type="email"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.email}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      email: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:space-x-6">
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">Password</span>
+                <input
+                  type="password"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.password}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      password: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col py-4 w-full">
+                <span className="mb-2 text-md">Repeat Password</span>
+                <input
+                  type="password"
+                  className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  value={userDetails.confirmPassword}
+                  onChange={(e) =>
+                    setUserDetails({
+                      ...userDetails,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Button Centered */}
+            <div className="flex justify-center">
+              <button
+                className="w-full bg-blue-600 text-white p-2 rounded-lg my-6 hover:bg-white hover:text-black hover:border hover:border-gray-300"
+                type="submit"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+
+          <div className="text-center text-gray-400 flex gap-2 items-center justify-center">
+            <span>Don't have an account?</span>
+            <span className="font-bold text-black">
+              <NavLink to="/auth/login">Sign in</NavLink>
             </span>
           </div>
         </div>
