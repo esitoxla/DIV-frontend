@@ -1,27 +1,84 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { User, LogOut } from "lucide-react";
 import { FaTwitter, FaInstagram, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
-import profile from "../assets/images/profile.1.jpg";
+import profile from "../assets/images/profile.1.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { getUser, logoutUser } from "../store/features/auth-thunks";
+import { toast } from "react-toastify";
 
 export default function Profile() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, error, loading } = useSelector((store) => store.auth);
+
   const [formData, setFormData] = useState({
-    username: "Asenkrekmanov",
-    email: "azkrekmanov@gmail.com",
-    password: "bigbigworld123",
-    repeatPassword: "bigbigworld123",
-    about:
-      "I am Asen Krekmanov and I am a dedicated UI/UX Designer from Sofia, Bulgaria.",
+    username: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
+    about: "",
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+    if (!user) {
+      dispatch(getUser());
+    } else {
+      setFormData({
+        username: user.businessName || "",
+        email: user.email || "",
+        password: "",
+        repeatPassword: "",
+        about: user.about || "",
+      });
+    }
+  }, [user, dispatch]);
+
+  //  Handle profile update
+  // async function handleUpdate(e) {
+  //   e.preventDefault();
+
+  //   if (formData.password && formData.password !== formData.repeatPassword) {
+  //     toast.error("Passwords do not match!");
+  //     return;
+  //   }
+
+  //   // Build payload for update
+  //   const payload = {
+  //     businessName: formData.username,
+  //     email: formData.email,
+  //     about: formData.about,
+  //   };
+  //   if (formData.password) payload.password = formData.password;
+
+  //   // Dispatch update
+  //   await dispatch(updateProfile(payload));
+
+  //   toast.success("Profile updated!");
+  // }
+
+  async function handleLogout(e) {
+    e.preventDefault();
+
+    // const confirmed = window.confirm("Are you sure you want to logout?");
+    // if (!confirmed) return;
+
+    dispatch(logoutUser());
+
+    toast.success("Logout successful!");
+    navigate("/");
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-[3rem]">
-      <div className="bg-white rounded-2xl shadow-lg w-[90%]  h-full flex flex-col gap-6 overflow-hidden p-6">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg w-[90%]  h-full flex flex-col gap-6 overflow-hidden p-6">
         {/* Header */}
         <div className="w-full flex relative flex-col sm:flex-row sm:items-center sm:justify-between">
           <h2 className="px-0 sm:px-6 text-2xl sm:text-3xl font-bold text-[#223962] mb-4 sm:mb-0">
@@ -29,9 +86,12 @@ export default function Profile() {
           </h2>
 
           <ul className="absolute sm:static right-8 sm:right-0">
-            <li className="flex items-center gap-2 cursor-pointer font-medium text-red-500 hover:underline">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 cursor-pointer font-medium text-red-500 hover:underline"
+            >
               <LogOut size={18} /> Log Out
-            </li>
+            </button>
           </ul>
         </div>
 
@@ -53,6 +113,7 @@ export default function Profile() {
                 </button>
               </div>
 
+              {/* Socials (unchanged) */}
               <div className="flex flex-row flex-wrap sm:flex-col gap-3 text-sm sm:text-base justify-center sm:justify-start">
                 <button className="flex items-center gap-2 text-blue-600">
                   <FaFacebook size={18} />
@@ -140,8 +201,12 @@ export default function Profile() {
 
         {/* Update Button */}
         <div className="text-right mt-6">
-          <button className="px-6 py-2 bg-[#223962] text-white rounded-lg shadow hover:bg-blue-900">
-            Update Information
+          <button
+            // onClick={handleUpdate} // 🔹 Hooked update to button
+            disabled={loading}
+            className="px-6 py-2 bg-[#223962] text-white rounded-lg shadow hover:bg-blue-900 disabled:opacity-50"
+          >
+            {loading ? "Updating..." : "Update Information"}
           </button>
         </div>
       </div>

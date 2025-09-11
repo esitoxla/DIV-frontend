@@ -7,10 +7,10 @@ export default function QrAction() {
         <h3 className="font-bold text-4xl">
           Ready to Create Your First QR Code?
         </h3>
-        <p className="text-[20px] font-light">
+        <div className="text-[20px] font-light">
           <p>Generate, customize, and download QR Instantly,</p>
           <p>free and easy to use!</p>
-        </p>
+        </div>
         <div className="">
           <div className="flex gap-2 items-center justify-center">
             <button className="border-0 rounded-sm lg:px-6 py-3 bg-white text-black font-medium mr-5">

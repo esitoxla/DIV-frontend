@@ -1,29 +1,38 @@
-import React from "react";
-import { Link, NavLink } from "react-router";
-
-const folders = [
-  {
-    name: "Marketing",
-    qrCount: 12,
-    date: "Mar 23, 2025",
-  },
-  {
-    name: "Event",
-    qrCount: 12,
-    date: "Mar 23, 2025",
-  },
-];
+import React, { useState } from "react";
+import { NavLink } from "react-router";
 
 const QRFolderDashboard = () => {
+  const [folders, setFolders] = useState([
+    { name: "Marketing", qrCount: 12, date: "Mar 23, 2025" },
+    { name: "Event", qrCount: 8, date: "Mar 25, 2025" },
+  ]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+
+  const handleCreateFolder = () => {
+    if (!newFolderName.trim()) return;
+
+    const today = new Date().toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    setFolders([...folders, { name: newFolderName, qrCount: 0, date: today }]);
+    setNewFolderName("");
+    setIsCreating(false);
+  };
+
   return (
     <div className="p-6 bg-gray-50">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Mr QR Codes</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">My QR Codes</h1>
           <p className="text-sm text-gray-500">Browse all QR Codes</p>
         </div>
 
+        {/* Create QR Code */}
         <NavLink to="create">
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
             + Create QR Code
@@ -62,11 +71,45 @@ const QRFolderDashboard = () => {
         ))}
 
         {/* Create New Folder */}
-        <div className="bg-white border border-blue-300 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:shadow-md transition">
-          <div className="text-center text-blue-600">
-            <div className="text-3xl">📁</div>
-            <div className="text-sm mt-1 font-medium">+ Create new folder</div>
-          </div>
+        <div className="bg-white border border-blue-300 rounded-lg p-4 flex items-center justify-center hover:shadow-md transition">
+          {!isCreating ? (
+            <div
+              className="text-center text-blue-600 cursor-pointer"
+              onClick={() => setIsCreating(true)}
+            >
+              <div className="text-3xl">📁</div>
+              <div className="text-sm mt-1 font-medium">
+                + Create new folder
+              </div>
+            </div>
+          ) : (
+            <div className="w-full">
+              <input
+                type="text"
+                value={newFolderName}
+                onChange={(e) => setNewFolderName(e.target.value)}
+                placeholder="Folder name"
+                className="border border-gray-300 rounded-md px-3 py-2 w-full text-sm mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              <div className="flex justify-between space-x-2">
+                <button
+                  onClick={handleCreateFolder}
+                  className="flex-1 bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setIsCreating(false);
+                    setNewFolderName("");
+                  }}
+                  className="flex-1 bg-gray-200 px-3 py-1 rounded-md text-sm"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
