@@ -1,11 +1,15 @@
 import React from "react";
 import { MdMenu } from "react-icons/md";
 import { LiaCrownSolid } from "react-icons/lia";
-import profile from "../assets/images/profile.1.jpg";
+import profile from "../assets/images/profile.1.png";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { NavLink } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function Topbar({ toggleSidebar }) {
+
+  const { user } = useSelector((state) => state.auth)
+
   return (
     <div className="flex justify-between items-center w-full border-b border-gray-200 py-2 px-4">
       <div className="flex gap-6 items-center">
@@ -26,14 +30,20 @@ export default function Topbar({ toggleSidebar }) {
       <div className="flex gap-2 sm:gap-4 items-center">
         <div>
           <img
-            src={profile}
+            src={
+              user?.profilePicture
+                ? `http://localhost:8040/${user.profilePicture}`
+                : profile
+            }
             alt="Profile"
             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
           />
         </div>
 
         <div className="hidden sm:block text-xs">
-          <p className="font-medium">Moni Ray</p>
+          <p className="font-medium">
+            {user?.firstName} {user?.lastName}
+          </p>
           <p>Vendor</p>
         </div>
 

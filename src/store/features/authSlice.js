@@ -1,5 +1,14 @@
-import {  createSlice } from "@reduxjs/toolkit";
-import { registerUser, loginUser, logoutUser, getUser, uploadProfile } from "./auth-thunks";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  registerUser,
+  loginUser,
+  logoutUser,
+  getUser,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+  updateUser,
+} from "./auth-thunks";
 
 const initialState = {
   user: null,
@@ -7,11 +16,14 @@ const initialState = {
   error: null,
 };
 
-
-
 export const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state, action) => {
@@ -69,23 +81,63 @@ export const authSlice = createSlice({
         state.error = action.payload;
       })
 
-
-      //for profile upload
-      .addCase(uploadProfile.pending, (state, action) => {
+      //this is for updating user details
+      .addCase(updateUser.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(uploadProfile.fulfilled, (state, action) => {
+      .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
-        // update profilePic only
-        if (state.user) {
-          state.user.profilePicture = action.payload.profilePicture;
-        }
+        state.user = action.payload;
       })
-      .addCase(uploadProfile.rejected, (state, action) => {
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
+        state.user = null;
+        state.error = action.payload;
+      })
+
+      //this is for forgot password cases
+      .addCase(forgotPassword.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.message = null;
+        state.error = action.payload;
+      })
+
+      //this is for reset password cases
+      .addCase(resetPassword.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.message = null;
+        state.error = action.payload;
+      })
+
+      //this is for change password cases
+      .addCase(changePassword.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.message = null;
         state.error = action.payload;
       });
   },
 });
 
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;
