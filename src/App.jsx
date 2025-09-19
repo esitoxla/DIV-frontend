@@ -25,12 +25,21 @@ import QrCodeLayout from "./Layouts/QrCodeLayout";
 import Settings from "./pages/Settings";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import { PrivateRoute, PublicRoute } from "./Helper/ProtectRoutes";
+import UpdateProfile from "./pages/UpdateProfile";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      Component: RootLayout,
+      element: (
+        <PublicRoute>
+          <RootLayout />
+        </PublicRoute>
+      ),
       errorElement: <NotFound />,
       children: [
         {
@@ -53,7 +62,11 @@ function App() {
     },
     {
       path: "dashboard",
-      Component: VendorLayout,
+      element: (
+        <PrivateRoute>
+          <VendorLayout />
+        </PrivateRoute>
+      ),
       children: [
         {
           path: "myqrcodes",
@@ -85,12 +98,23 @@ function App() {
           path: "settings",
           Component: Settings,
         },
-
+        {
+          path: "update",
+          Component: UpdateProfile,
+        },
+        {
+          path: "changePass",
+          Component: ChangePassword,
+        },
       ],
     },
     {
       path: "auth",
-      Component: AuthLayout,
+      element: (
+        <PublicRoute>
+          <AuthLayout />
+        </PublicRoute>
+      ),
       children: [
         {
           path: "login",
@@ -100,7 +124,15 @@ function App() {
           path: "signup",
           Component: SignUp,
         },
+        {
+          path: "forgot-password",
+          Component: ForgotPassword,
+        },
       ],
+    },
+    {
+      path: "/resetPassword/:resetToken",
+      Component: ResetPassword,
     },
   ]);
 

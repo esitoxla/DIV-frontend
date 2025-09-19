@@ -5,7 +5,7 @@ export const registerUser = createAsyncThunk(
   "register",
   async (registerData, thunkAPI) => {
     try {
-      const res = await api.post("/register", registerData);
+      const res = await api.post("/auth/register", registerData);
       return res.data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -21,8 +21,8 @@ export const loginUser = createAsyncThunk(
   "login",
   async (loginData, thunkAPI) => {
     try {
-      const res = await api.post("/login", loginData);
-      return res.data;
+      const res = await api.post("/auth/login", loginData);
+      return res.data.user;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return thunkAPI.rejectWithValue(error.response.data.message);
@@ -34,7 +34,7 @@ export const loginUser = createAsyncThunk(
 //for logout
 export const logoutUser = createAsyncThunk("logout", async (_, thunkAPI) => {
   try {
-    const res = await api.post("/logout");
+    const res = await api.post("/auth/logout");
     return res.data;
   } catch (error) {
     if (error.response && error.response.data.message) {
@@ -46,31 +46,73 @@ export const logoutUser = createAsyncThunk("logout", async (_, thunkAPI) => {
 //for getting a user details
 export const getUser = createAsyncThunk("getUser", async (_, thunkAPI) => {
   try {
-   const res = await api.get("/me");
-   console.log(res)
+    const res = await api.get("/auth/me");
+    console.log(res);
     return thunkAPI.fulfillWithValue(res.data.user);
   } catch (error) {
-     if (error.response && error.response.data.message) {
-       return thunkAPI.rejectWithValue(error.response.data.message);
-     }
+    if (error.response && error.response.data.message) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
   }
 });
 
 
-// for uploading profile pic
-export const uploadProfile = createAsyncThunk("profile", async (file, thunkAPI) => {
-    try {
-        const formData = new FormData();
-        formData.append("avatar", file);
+//for updating user
+export const updateUser = createAsyncThunk("editUser", async (uData, thunkAPI) => {
+  try {
+    const res = await api.put("/auth/update", uData);
+    console.log(res);
+    return res.data.user;
+  } catch (error) {
+    console.log(error)
+  }
+})
 
-        const res = await api.post("/upload", formData);
-        return res.data;
-        
+export const forgotPassword = createAsyncThunk(
+  "forgotPass",
+  async (FData, thunkAPI) => {
+    try {
+      const res = await api.post("/auth/forgotPassword", FData);
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      }
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "resetPass",
+  async (resetData, thunkAPI) => {
+    try {
+      const res = await api.post(
+        `/auth/resetPassword/${resetData.resetToken}`,
+        { password: resetData.password }
+      );
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
+     if (error.response && error.response.data.message) {
+       return thunkAPI.rejectWithValue(null);
+     }
+     return thunkAPI.rejectWithValue(null);
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "changePass",
+  async (CData, thunkAPI) => {
+    try {
+      const res = await api.post("/auth/changePassword", CData);
+       console.log(res.data);
+       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
        if (error.response && error.response.data.message) {
-         return thunkAPI.rejectWithValue(error.response.data.message);
+         return thunkAPI.rejectWithValue(null);
        }
-
-
+       return thunkAPI.rejectWithValue(null);
     }
-})
+  }
+);

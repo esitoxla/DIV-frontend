@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/features/auth-thunks";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, error, loading } = useSelector((store) => store.auth);
+
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
-    businessName:"",
+    businessName: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    // confirmPassword: "",
   });
 
   async function handleRegister(e) {
@@ -25,18 +28,23 @@ const SignUp = () => {
       businessName,
       email,
       password,
-      confirmPassword,
+      // confirmPassword,
     } = userDetails;
 
-    if (
-      !firstName ||
-      !lastName ||
-      !businessName ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
-     return toast.error("All the fields are required");
+    if (!firstName) {
+      return toast.error("First name required");
+    }
+    if (!lastName) {
+      return toast.error("Last name required");
+    }
+    if (!businessName) {
+      return toast.error("Business name required");
+    }
+    if (!email) {
+      return toast.error("Email required");
+    }
+    if (!password) {
+      return toast.error("Password required");
     }
 
     dispatch(
@@ -44,20 +52,21 @@ const SignUp = () => {
         firstName: userDetails.firstName,
         lastName: userDetails.lastName,
         businessName: userDetails.businessName,
-        email: userDetails.email, 
+        email: userDetails.email,
         password: userDetails.password,
-        confirmPassword: userDetails.confirmPassword
-       }) 
+        // confirmPassword: userDetails.confirmPassword
+      })
     );
 
-     toast.success("You have signed up successfully!");
-     navigate("/auth/login")
+    if (user?.success) {
+      toast.success("You have signed up successfully!");
+      navigate("/auth/login", { replace: true });
+    }
   }
 
+  if (loading) return <div>Loading...</div>;
 
-
-
-
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -151,13 +160,13 @@ const SignUp = () => {
                 <input
                   type="password"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-                  value={userDetails.confirmPassword}
-                  onChange={(e) =>
-                    setUserDetails({
-                      ...userDetails,
-                      confirmPassword: e.target.value,
-                    })
-                  }
+                  // value={userDetails.confirmPassword}
+                  // onChange={(e) =>
+                  //   setUserDetails({
+                  //     ...userDetails,
+                  //     confirmPassword: e.target.value,
+                  //   })
+                  // }
                 />
               </div>
             </div>
