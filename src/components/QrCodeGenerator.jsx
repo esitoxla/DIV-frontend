@@ -10,7 +10,7 @@ const QRCodeGenerator = ({ onClose }) => {
   const canvasRef = useRef(null);
 
   // States
-  const [url, setUrl] = useState("http://kingvibes.com");
+  const [url, setUrl] = useState("http://youtube.com");
   const [wifiSSID, setWifiSSID] = useState("");
   const [wifiPass, setWifiPass] = useState("");
   const [wifiType, setWifiType] = useState("WPA");
