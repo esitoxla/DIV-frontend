@@ -18,6 +18,8 @@ const QRFolderDashboard = () => {
       year: "numeric",
     });
 
+    
+
     setFolders([...folders, { name: newFolderName, qrCount: 0, date: today }]);
     setNewFolderName("");
     setIsCreating(false);
@@ -112,6 +114,9 @@ const QRFolderDashboard = () => {
           )}
         </div>
       </div>
+
+       {/* QR Code Modal */}
+      {isCreating && <QRCodeGenerator onClose={() => setIsCreating(false)} />}
     </div>
   );
 };

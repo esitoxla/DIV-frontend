@@ -1,85 +1,257 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import QRCode from "qrcode";
+import { jsPDF } from "jspdf"; // ✅ Import jsPDF
 
-const QRCodeGenerator = () => {
-  const [url, setUrl] = useState("http://kingvibes.com");
+const QRCodeGenerator = ({ onClose }) => {
+  const [qrType, setQrType] = useState("url");
   const [format, setFormat] = useState("PNG");
-  const [size, setSize] = useState("1200px");
+  const [size, setSize] = useState("600");
+  const [qrSrc, setQrSrc] = useState("");
+  const canvasRef = useRef(null);
+
+  // States
+  const [url, setUrl] = useState("http://youtube.com");
+  const [wifiSSID, setWifiSSID] = useState("");
+  const [wifiPass, setWifiPass] = useState("");
+  const [wifiType, setWifiType] = useState("WPA");
+  const [smsNumber, setSmsNumber] = useState("");
+  const [smsMessage, setSmsMessage] = useState("");
+  const [vName, setVName] = useState("");
+  const [vPhone, setVPhone] = useState("");
+  const [vEmail, setVEmail] = useState("");
+
+  // Build QR content
+  const buildQRContent = () => {
+    switch (qrType) {
+      case "wifi":
+        return `WIFI:T:${wifiType};S:${wifiSSID};P:${wifiPass};;`;
+      case "sms":
+        return `SMSTO:${smsNumber}:${smsMessage}`;
+      case "vcard":
+        return `BEGIN:VCARD
+VERSION:3.0
+FN:${vName}
+TEL:${vPhone}
+EMAIL:${vEmail}
+END:VCARD`;
+      default:
+        return url;
+    }
+  };
+
+  // Generate QR
+  const generateQRCode = async () => {
+    try {
+      const content = buildQRContent();
+
+      if (format === "SVG") {
+        const svg = await QRCode.toString(content, {
+          type: "svg",
+          width: parseInt(size),
+        });
+        setQrSrc(`data:image/svg+xml;utf8,${encodeURIComponent(svg)}`);
+      } else {
+        await QRCode.toCanvas(canvasRef.current, content, {
+          width: parseInt(size),
+        });
+        setQrSrc(canvasRef.current.toDataURL("image/png")); // always keep as PNG for preview
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Download
+  const downloadQRCode = () => {
+    if (format === "PDF") {
+      const pdf = new jsPDF();
+      pdf.addImage(
+        canvasRef.current.toDataURL("image/png"),
+        "PNG",
+        20,
+        20,
+        100,
+        100
+      );
+      pdf.save("qr_code.pdf");
+    } else {
+      const link = document.createElement("a");
+      link.href =
+        format === "SVG"
+          ? qrSrc
+          : canvasRef.current.toDataURL(`image/${format.toLowerCase()}`);
+      link.download = `qr_code.${format.toLowerCase()}`;
+      link.click();
+    }
+  };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 rounded-md shadow-lg border">
-      <h2 className="text-xl font-semibold mb-4">
-        Name your QR code and share
-      </h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[80vh] relative flex">
+        {/* Left form */}
+        <div className="flex-1 p-6 overflow-y-auto">
+          <h2 className="text-xl font-semibold mb-4">QR Code Generator</h2>
 
-      <label className="block mb-2 font-medium">URL New</label>
-      <div className="relative mb-4">
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md pr-10"
-        />
-        <span className="absolute right-3 top-2.5 cursor-pointer text-gray-500">
-          👁️
-        </span>
-      </div>
-
-      <div className="flex justify-between gap-4 mb-6">
-        <div className="flex-1">
-          <label className="block text-sm font-medium mb-1">Image Format</label>
+          {/* QR Type */}
+          <label className="block text-sm font-medium mb-1">QR Type</label>
           <select
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
+            value={qrType}
+            onChange={(e) => setQrType(e.target.value)}
+            className="w-full px-4 py-2 border rounded-md mb-4"
           >
-            <option value="PNG">PNG</option>
-            <option value="JPG">JPG</option>
-            <option value="SVG">SVG</option>
+            <option value="url">URL / Text</option>
+            <option value="wifi">WiFi Login</option>
+            <option value="sms">SMS</option>
+            <option value="vcard">vCard</option>
           </select>
+
+          {/* Dynamic fields (url, wifi, sms, vcard) */}
+
+          {qrType === "url" && (
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md mb-4"
+              placeholder="Enter URL / Text"
+            />
+          )}
+          {qrType === "wifi" && (
+            <div className="space-y-3 mb-4">
+              <input
+                type="text"
+                placeholder="SSID"
+                value={wifiSSID}
+                onChange={(e) => setWifiSSID(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={wifiPass}
+                onChange={(e) => setWifiPass(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <select
+                value={wifiType}
+                onChange={(e) => setWifiType(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              >
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">No Password</option>
+              </select>
+            </div>
+          )}
+          {qrType === "sms" && (
+            <div className="space-y-3 mb-4">
+              <input
+                type="text"
+                placeholder="Phone Number"
+                value={smsNumber}
+                onChange={(e) => setSmsNumber(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <textarea
+                placeholder="Message"
+                value={smsMessage}
+                onChange={(e) => setSmsMessage(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+            </div>
+          )}
+          {qrType === "vcard" && (
+            <div className="space-y-3 mb-4">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={vName}
+                onChange={(e) => setVName(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="text"
+                placeholder="Phone"
+                value={vPhone}
+                onChange={(e) => setVPhone(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={vEmail}
+                onChange={(e) => setVEmail(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+            </div>
+          )}
+
+          {/* Format + Size */}
+          <div className="flex justify-between gap-4 mb-6">
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">
+                File Format
+              </label>
+              <select
+                value={format}
+                onChange={(e) => setFormat(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              >
+                <option value="PNG">PNG</option>
+                <option value="JPG">JPG</option>
+                <option value="SVG">SVG</option>
+                <option value="PDF">PDF</option> {/* ✅ Added PDF */}
+              </select>
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">Size</label>
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md"
+              >
+                <option value="300">300px</option>
+                <option value="600">600px</option>
+                <option value="800">800px</option>
+                <option value="1000">1000px</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex justify-between items-center mb-4">
+            <button
+              onClick={generateQRCode}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md"
+            >
+              Generate
+            </button>
+            {qrSrc && (
+              <button
+                onClick={downloadQRCode}
+                className="bg-green-600 text-white px-4 py-2 rounded-md"
+              >
+                Download
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="bg-gray-500 text-white px-4 py-2 rounded-md"
+            >
+              Back
+            </button>
+          </div>
         </div>
 
-        <div className="flex-1">
-          <label className="block text-sm font-medium mb-1">Image Size</label>
-          <select
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
-          >
-            <option value="600px">600px</option>
-            <option value="800px">800px</option>
-            <option value="1000px">1000px</option>
-            <option value="1200px">1200px</option>
-          </select>
+        {/* Preview */}
+        <div className="flex items-center justify-center w-1/2 p-6 border-l">
+          {qrSrc ? (
+            <img src={qrSrc} alt="Generated QR Code" className="max-w-full" />
+          ) : (
+            <p className="text-gray-500">No QR code generated yet</p>
+          )}
+          <canvas ref={canvasRef} hidden />
         </div>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
-          Download
-        </button>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-          🔗
-        </button>
-        <div className="p-2 border rounded-md">
-          {/* Replace with real QR generator like react-qr-code */}
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?data=http://kingvibes.com&size=100x100"
-            alt="QR Code"
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-between items-center mt-6 text-sm text-gray-600 border-t pt-3">
-        <div className="flex items-center gap-2">
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?data=http://kingvibes.com&size=30x30"
-            alt="small qr"
-          />
-          <span>Track your code and see the scans on it</span>
-        </div>
-        <button className="border px-3 py-1 rounded-md text-sm hover:bg-gray-100">
-          Track Scan
-        </button>
       </div>
     </div>
   );
