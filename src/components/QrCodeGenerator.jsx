@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import QRCode from "qrcode";
 import { jsPDF } from "jspdf"; // ✅ Import jsPDF
+import { useNavigate } from "react-router";
 
 const QRCodeGenerator = ({ onClose }) => {
   const [qrType, setQrType] = useState("url");
@@ -8,6 +9,17 @@ const QRCodeGenerator = ({ onClose }) => {
   const [size, setSize] = useState("600");
   const [qrSrc, setQrSrc] = useState("");
   const canvasRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Close handler: call provided onClose (for inline/modal usage) or navigate back to folder dashboard route
+  const handleClose = () => {
+    if (onClose && typeof onClose === "function") {
+      onClose();
+    } else {
+      // Route back to the QR folder dashboard
+      navigate("/dashboard/myqrcodes");
+    }
+  };
 
   // States
   const [url, setUrl] = useState("http://youtube.com");
@@ -87,7 +99,15 @@ END:VCARD`;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[80vh] relative flex">
+        <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[80vh] relative flex">
+          {/* Close button (top-right) */}
+          <button
+            onClick={handleClose}
+            aria-label="Close QR generator"
+            className="absolute top-3 right-3 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full p-2"
+          >
+            ×
+          </button>
         {/* Left form */}
         <div className="flex-1 p-6 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">QR Code Generator</h2>
