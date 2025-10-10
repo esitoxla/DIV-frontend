@@ -31,6 +31,7 @@ import { PrivateRoute, PublicRoute } from "./Helper/ProtectRoutes";
 import UpdateProfile from "./pages/UpdateProfile";
 import ChangePassword from "./pages/ChangePassword";
 
+
 function App() {
   const router = createBrowserRouter([
     {

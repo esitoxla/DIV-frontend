@@ -1,16 +1,28 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import QRCode from "qrcode";
-import { jsPDF } from "jspdf"; // ✅ Import jsPDF
+import { jsPDF } from "jspdf"; //  Import jsPDF
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { addQrCode } from "../store/features/qrCodeSlice";
+import { fetchFolders } from "../store/features/folderSlice";
+import { useAuth } from "../hooks/useAuth";
 
-const QRCodeGenerator = ({ onClose }) => {
+const QRCodeGenerator = () => {
+  const [name, setName] = useState("");
+  const [selectedFolderId, setSelectedFolderId] = useState("");
   const [qrType, setQrType] = useState("url");
   const [format, setFormat] = useState("PNG");
   const [size, setSize] = useState("600");
   const [qrSrc, setQrSrc] = useState("");
+  const [step, setStep] = useState("generate");
   const canvasRef = useRef(null);
 
+  const dispatch = useDispatch();
+
+  const { folders, loading, error } = useSelector((state) => state.folders);
+
   // States
-  const [url, setUrl] = useState("http://youtube.com");
+  const [url, setUrl] = useState("");
   const [wifiSSID, setWifiSSID] = useState("");
   const [wifiPass, setWifiPass] = useState("");
   const [wifiType, setWifiType] = useState("WPA");
@@ -19,6 +31,8 @@ const QRCodeGenerator = ({ onClose }) => {
   const [vName, setVName] = useState("");
   const [vPhone, setVPhone] = useState("");
   const [vEmail, setVEmail] = useState("");
+
+  const navigate = useNavigate();
 
   // Build QR content
   const buildQRContent = () => {
@@ -44,6 +58,11 @@ END:VCARD`;
     try {
       const content = buildQRContent();
 
+      if (!content || content.trim() === "") {
+        alert("Please enter content before generating QR code.");
+        return;
+      }
+
       if (format === "SVG") {
         const svg = await QRCode.toString(content, {
           type: "svg",
@@ -56,6 +75,48 @@ END:VCARD`;
         });
         setQrSrc(canvasRef.current.toDataURL("image/png")); // always keep as PNG for preview
       }
+
+      setStep("save");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //load folders on mount
+  useEffect(() => {
+    dispatch(fetchFolders());
+  }, [dispatch]);
+
+  // Save QR
+  const saveQRCode = async () => {
+    try {
+      const canvas = document.querySelector("canvas");
+      if (!canvas) {
+        alert("Please generate a QR code first!");
+        return;
+      }
+
+      const content = buildQRContent();
+
+      const imageBase64 = canvas.toDataURL("image/png"); // generating base64
+
+      dispatch(
+        addQrCode({
+          folderId: selectedFolderId,
+          name,
+          qrType,
+          content,
+          fileFormat: format.toLowerCase(), //map format properly
+          size,
+          imageBase64, // send to backend
+          status: "active", // optional
+          scans: 0, // optional
+        })
+      );
+
+      alert("QR code added!");
+      console.log("QR code saved in DB");
+      setStep("download"); // move to download step
     } catch (err) {
       console.error(err);
     }
@@ -86,11 +147,21 @@ END:VCARD`;
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[80vh] relative flex">
+    <div className="fixed inset-0 flex items-center justify-center  bg-black/20 backdrop-blur-xs z-500">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[90vh] relative flex">
         {/* Left form */}
         <div className="flex-1 p-6 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">QR Code Generator</h2>
+
+          {/* QR Name */}
+          <label className="block text-sm font-medium mb-1">QR Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border px-3 py-2 rounded mb-4"
+            placeholder="Enter a name for this QR"
+          />
 
           {/* QR Type */}
           <label className="block text-sm font-medium mb-1">QR Type</label>
@@ -113,7 +184,7 @@ END:VCARD`;
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="w-full px-4 py-2 border rounded-md mb-4"
-              placeholder="Enter URL / Text"
+              placeholder="Enter website URL or text (e.g. https://example.com)"
             />
           )}
           {qrType === "wifi" && (
@@ -186,6 +257,31 @@ END:VCARD`;
             </div>
           )}
 
+          {/* Folder Dropdown */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Select Folder
+            </label>
+            {loading ? (
+              <p>Loading folders...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : (
+              <select
+                value={selectedFolderId}
+                onChange={(e) => setSelectedFolderId(e.target.value)}
+                className="w-full border px-3 py-2 rounded mb-4"
+              >
+                <option value="">-- Choose Folder --</option>
+                {folders.map((folder) => (
+                  <option key={folder._id} value={folder._id}>
+                    {folder.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+
           {/* Format + Size */}
           <div className="flex justify-between gap-4 mb-6">
             <div className="flex-1">
@@ -200,7 +296,7 @@ END:VCARD`;
                 <option value="PNG">PNG</option>
                 <option value="JPG">JPG</option>
                 <option value="SVG">SVG</option>
-                <option value="PDF">PDF</option> {/* ✅ Added PDF */}
+                <option value="PDF">PDF</option> {/* Added PDF */}
               </select>
             </div>
             <div className="flex-1">
@@ -220,13 +316,25 @@ END:VCARD`;
 
           {/* Buttons */}
           <div className="flex justify-between items-center mb-4">
-            <button
-              onClick={generateQRCode}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md"
-            >
-              Generate
-            </button>
-            {qrSrc && (
+            {step === "generate" && (
+              <button
+                onClick={generateQRCode}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Generate
+              </button>
+            )}
+
+            {step === "save" && (
+              <button
+                onClick={saveQRCode}
+                className="bg-yellow-600 text-white px-4 py-2 rounded-md"
+              >
+                Save
+              </button>
+            )}
+
+            {step === "download" && (
               <button
                 onClick={downloadQRCode}
                 className="bg-green-600 text-white px-4 py-2 rounded-md"
@@ -234,8 +342,9 @@ END:VCARD`;
                 Download
               </button>
             )}
+
             <button
-              onClick={onClose}
+              onClick={() => navigate(-1)}
               className="bg-gray-500 text-white px-4 py-2 rounded-md"
             >
               Back

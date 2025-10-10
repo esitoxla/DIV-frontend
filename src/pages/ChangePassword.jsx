@@ -40,7 +40,7 @@ export default function ChangePassword() {
         navigate("/auth/login", { replace: true });
     }
 
-    if(error) return <div>{error}</div>
+    if(error) return <div>{error.message}</div>
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-xs z-50">
