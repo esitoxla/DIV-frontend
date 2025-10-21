@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import QRCode from "qrcode";
 import { jsPDF } from "jspdf"; //  Import jsPDF
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addQrCode } from "../store/features/qrCodeSlice";
+import { useSelector } from "react-redux";
+import { fetchFolders } from "../store/features/folderSlice";
 
 const QRCodeGenerator = () => {
   const [name, setName] = useState("");
@@ -39,7 +43,7 @@ const QRCodeGenerator = () => {
   const [vPhone, setVPhone] = useState("");
   const [vEmail, setVEmail] = useState("");
 
-  const navigate = useNavigate();
+  
 
   // Build QR content
   const buildQRContent = () => {
@@ -154,16 +158,16 @@ END:VCARD`;
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[80vh] relative flex">
-          {/* Close button (top-right) */}
-          <button
-            onClick={handleClose}
-            aria-label="Close QR generator"
-            className="absolute top-3 right-3 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full p-2"
-          >
-            ×
-          </button>
+    <div className="fixed inset-0 flex items-center justify-center  bg-black/20 backdrop-blur-xs z-50">
+      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-5xl h-[90vh] relative flex">
+        {/* Close button (top-right) */}
+        {/* <button
+          onClick={handleClose}
+          aria-label="Close QR generator"
+          className="absolute top-3 right-3 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-full p-2"
+        >
+          ×
+        </button> */}
         {/* Left form */}
         <div className="flex-1 p-6 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">QR Code Generator</h2>

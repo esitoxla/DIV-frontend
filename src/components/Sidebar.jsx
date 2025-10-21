@@ -124,7 +124,7 @@ export default function Sidebar({ toggleSidebar }) {
           </button>
         </div>
 
-        <ul className="absolute sm:static right-8 sm:right-0">
+        <ul className="">
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 cursor-pointer font-medium text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded"
