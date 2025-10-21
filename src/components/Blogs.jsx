@@ -1,6 +1,7 @@
 import React from "react";
 import { blogs } from "../../helpers/blogs";
 import { BsArrowRight } from "react-icons/bs";
+import { NavLink } from "react-router";
 
 
 
@@ -35,14 +36,14 @@ export default function Blogs() {
       </div>
 
       <div className="my-6 mx-8 text-gray-400">
-        
+        <NavLink to="blogs">
           <div className=" flex gap-2 items-center cursor-pointer ">
             <p>View More Blog </p>
             <span>
               <BsArrowRight />
             </span>
           </div>
-        
+        </NavLink>
 
         <p className="border-b-2 lg:w-[11%] w-[50%] "></p>
       </div>

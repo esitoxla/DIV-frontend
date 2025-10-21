@@ -1,10 +1,11 @@
 import React from 'react'
-import { blogs } from '../../helpers/blogs';
+import { blogs } from '../Helper/blogs';
+
 
 export default function BlogsPage() {
   return (
     <>
-      <h3 className="font-bold text-4xl text-center pt-8">Our Blog</h3>
+      <h3 className="font-bold text-4xl text-center pt-8">Our Blogs</h3>
       <div className="flex justify-center px-12 mt-10 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full">
           {blogs.map((blog) => (

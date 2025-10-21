@@ -4,7 +4,6 @@ import About from "./components/About";
 import FAQs from "./components/FAQs";
 import QrAction from "./components/QrAction";
 import PricingPage from "./pages/PricingPage";
-import Blogs from "./components/blogs";
 import BlogsPage from "./pages/BlogsPage";
 import Navbar from "./components/Navbar";
 import { createBrowserRouter, RouterProvider } from "react-router";
