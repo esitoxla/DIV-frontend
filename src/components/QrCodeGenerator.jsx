@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { addQrCode } from "../store/features/qrCodeSlice";
 import { useSelector } from "react-redux";
 import { fetchFolders } from "../store/features/folderSlice";
+import toast from "react-hot-toast";
+
 
 const QRCodeGenerator = () => {
   const [name, setName] = useState("");
@@ -43,9 +45,11 @@ const QRCodeGenerator = () => {
   const [vPhone, setVPhone] = useState("");
   const [vEmail, setVEmail] = useState("");
 
-  
-
   // Build QR content
+  //builds the text that goes inside the QR code (e.g., a URL, Wi-Fi info, contact card, etc.)
+  //It checks the selected QR type (qrType) and builds the correct content string based on that type.
+  //content string becomes the data encoded inside the QR code.
+  //When you scan the QR, your phone reads that exact string and takes action (open link, send SMS, etc.).
   const buildQRContent = () => {
     switch (qrType) {
       case "wifi":
@@ -65,12 +69,14 @@ END:VCARD`;
   };
 
   // Generate QR
+  //uses the qrcode library to turn that text into an actual image (the black-and-white QR).
+  //draws the QR directly onto an invisible <canvas> using QRCode.toCanvas()
   const generateQRCode = async () => {
     try {
       const content = buildQRContent();
 
       if (!content || content.trim() === "") {
-        alert("Please enter content before generating QR code.");
+        toast.error("Please enter content before generating QR code.");
         return;
       }
 
@@ -99,11 +105,12 @@ END:VCARD`;
   }, [dispatch]);
 
   // Save QR
+  //extracts that image from the canvas, turns it into a base64 string, and sends it to your backend for saving.
   const saveQRCode = async () => {
     try {
       const canvas = document.querySelector("canvas");
       if (!canvas) {
-        alert("Please generate a QR code first!");
+        toast.error("Please generate a QR code first!");
         return;
       }
 
@@ -125,7 +132,7 @@ END:VCARD`;
         })
       );
 
-      alert("QR code added!");
+      toast.success("QR code added!");
       console.log("QR code saved in DB");
       setStep("download"); // move to download step
     } catch (err) {

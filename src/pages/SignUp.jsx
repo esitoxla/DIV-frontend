@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/features/auth-thunks";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -85,6 +85,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">First Name</span>
                 <input
                   type="text"
+                  placeholder="Enter first name"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   value={userDetails.firstName}
                   onChange={(e) =>
@@ -99,6 +100,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">Last Name</span>
                 <input
                   type="text"
+                  placeholder="Enter last name"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   value={userDetails.lastName}
                   onChange={(e) =>
@@ -115,6 +117,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">Business Name</span>
                 <input
                   type="text"
+                  placeholder="Enter business name"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   value={userDetails.businessName}
                   onChange={(e) =>
@@ -129,6 +132,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">Email</span>
                 <input
                   type="email"
+                  placeholder="Enter email"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   value={userDetails.email}
                   onChange={(e) =>
@@ -145,6 +149,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">Password</span>
                 <input
                   type="password"
+                  placeholder="Enter password"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   value={userDetails.password}
                   onChange={(e) =>
@@ -159,6 +164,7 @@ const SignUp = () => {
                 <span className="mb-2 text-md">Repeat Password</span>
                 <input
                   type="password"
+                  placeholder="Enter password"
                   className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                   // value={userDetails.confirmPassword}
                   // onChange={(e) =>
@@ -183,7 +189,7 @@ const SignUp = () => {
           </form>
 
           <div className="text-center text-gray-400 flex gap-2 items-center justify-center">
-            <span>Don't have an account?</span>
+            <span>Already have an account?</span>
             <span className="font-bold text-black">
               <NavLink to="/auth/login">Sign in</NavLink>
             </span>

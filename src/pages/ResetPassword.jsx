@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { useEffect } from 'react';
 import { api } from '../config/axios';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 export default function ResetPassword() {
 
@@ -25,15 +25,17 @@ export default function ResetPassword() {
         e.preventDefault()
 
         if (!password) {
-          return alert("password cannot be empty");  
+           toast.error("password cannot be empty");  
+           return;
         }
 
         if (!confirmPassword) {
-          return alert("confirm password cannot be empty");
+          toast.error("confirm password cannot be empty");
+          return; 
         }
 
         dispatch(resetPassword({ resetToken, password }))
-        alert("Password reset successful, login in with new password");
+        toast.success("Password reset successful, login in with new password");
     }
 
     useEffect(() => {

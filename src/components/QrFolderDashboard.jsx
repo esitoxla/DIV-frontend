@@ -6,10 +6,12 @@ import {
   addFolder,
   deleteFolder,
 } from "../store/features/folderSlice";
+import { fetchQrCodes } from "../store/features/qrCodeSlice";
 
 const QRFolderDashboard = () => {
   const dispatch = useDispatch();
   const { folders, loading, error } = useSelector((state) => state.folders);
+
 
   const [isCreating, setIsCreating] = useState(false);
   const [name, setName] = useState("");
@@ -46,19 +48,32 @@ const QRFolderDashboard = () => {
   };
 
   //confirm delete
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (confirmInput === "DELETE") {
-      dispatch(deleteFolder(folderToDelete._id));
-      setShowConfirm(false);
-      setConfirmInput("");
-      setFolderToDelete(null);
+      try {
+        // delete folder first
+        await dispatch(deleteFolder(folderToDelete._id)).unwrap();
+
+        // refetch QR codes after deletion completes
+        await dispatch(fetchQrCodes());
+
+        // close modal + reset inputs
+        setShowConfirm(false);
+        setConfirmInput("");
+        setFolderToDelete(null);
+
+        toast.success("Folder deleted successfully!");
+      } catch (error) {
+        toast.error(error || "Failed to delete folder");
+      }
     } else {
       alert("Please type DELETE to confirm");
     }
   };
 
+
   return (
-    <div className="p-6 bg-gray-50">
+    <div className="p-6 bg-gray-100">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>

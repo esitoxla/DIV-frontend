@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../config/axios";
+import { deleteFolder } from "./folderSlice";
+
 
 //add qrcode
 export const addQrCode = createAsyncThunk(
@@ -126,7 +128,13 @@ const qrCodeSlice = createSlice({
       .addCase(updateQrcode.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(deleteFolder.fulfilled, (state, action) => {
+        const { folderId } = action.payload;
+        state.qrCodes = state.qrCodes.filter((qr) => qr.folderId !== folderId);
       });
+
   },
 });
 

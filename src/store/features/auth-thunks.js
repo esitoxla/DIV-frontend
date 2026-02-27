@@ -16,6 +16,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+
 //for login
 export const loginUser = createAsyncThunk(
   "login",
@@ -31,6 +32,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+
 //for logout
 export const logoutUser = createAsyncThunk("logout", async (_, thunkAPI) => {
   try {
@@ -42,6 +44,7 @@ export const logoutUser = createAsyncThunk("logout", async (_, thunkAPI) => {
     }
   }
 });
+
 
 //for getting a user details
 export const getUser = createAsyncThunk("getUser", async (_, thunkAPI) => {
@@ -68,6 +71,7 @@ export const updateUser = createAsyncThunk("editUser", async (uData, thunkAPI) =
   }
 })
 
+
 export const forgotPassword = createAsyncThunk(
   "forgotPass",
   async (FData, thunkAPI) => {
@@ -82,6 +86,7 @@ export const forgotPassword = createAsyncThunk(
     }
   }
 );
+
 
 export const resetPassword = createAsyncThunk(
   "resetPass",
@@ -100,6 +105,7 @@ export const resetPassword = createAsyncThunk(
     }
   }
 );
+
 
 export const changePassword = createAsyncThunk(
   "changePass",

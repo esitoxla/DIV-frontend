@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../config/axios";
+import toast from "react-hot-toast";
 
 // Fetch folders
 export const fetchFolders = createAsyncThunk(
@@ -34,14 +35,18 @@ export const addFolder = createAsyncThunk(
 );
 
 export const deleteFolder = createAsyncThunk(
-  "Folders/deleteFolder",
+  "folders/deleteFolder",
   async (id, { rejectWithValue }) => {
     try {
       const { data } = await api.delete(`/folders/${id}`);
-      return id; // return deleted folder id so we can remove it from state
+
+      return {
+        folderId: id,
+        message: data.message || "Folder deleted successfully",
+      };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete folders"
+        error.response?.data?.message || "Failed to delete folder"
       );
     }
   }
@@ -86,20 +91,19 @@ const folderSlice = createSlice({
       })
 
       // delete folder
-      .addCase(deleteFolder.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+
       .addCase(deleteFolder.fulfilled, (state, action) => {
-        state.loading = false;
-        // remove deleted folder from list, manually update the state.
+        const { folderId } = action.payload;
+
+        // Remove the folder from state
         state.folders = state.folders.filter(
-          (folder) => folder._id !== action.payload
+          (folder) => folder._id !== folderId
         );
+
+        toast.success("Folder deleted successfully!");
       })
       .addCase(deleteFolder.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        toast.error(action.payload);
       });
   },
 });

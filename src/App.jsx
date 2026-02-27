@@ -29,6 +29,7 @@ import ResetPassword from "./pages/ResetPassword";
 import { PrivateRoute, PublicRoute } from "./Helper/ProtectRoutes";
 import UpdateProfile from "./pages/UpdateProfile";
 import ChangePassword from "./pages/ChangePassword";
+import { Toaster } from "react-hot-toast";
 
 
 function App() {
@@ -140,7 +141,24 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer position="top-right" autoClose={3000} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#fff",
+            color: "#333",
+            borderRadius: "8px",
+          },
+          success: {
+            iconTheme: {
+              primary: "#3b82f6", // Blue color for the check icon
+              secondary: "#fff", // Background behind the icon
+            },
+          },
+        }}
+      />
     </>
   );
 }
