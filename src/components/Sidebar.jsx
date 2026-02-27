@@ -8,7 +8,7 @@ import { NavLink, useNavigate } from "react-router";
 import { MdClose } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../store/features/auth-thunks";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { User, LogOut } from "lucide-react";
 
 export default function Sidebar({ toggleSidebar }) {
@@ -29,8 +29,8 @@ export default function Sidebar({ toggleSidebar }) {
       <div
         className="
          fixed top-0 left-0
-         text-gray-600 border-r border-gray-200
-          w-64 p-4 h-screen flex flex-col gap-6 py-6
+         text-gray-600 border-r-2 border-gray-400
+          w-64 p-4 h-screen flex flex-col gap-4 py-2
           bg-white z-50 overflow-y-auto
       "
       >
@@ -40,9 +40,9 @@ export default function Sidebar({ toggleSidebar }) {
           </button>
         </div>
 
-        <div className="text-2xl font-bold">TLPay</div>
+        <div className="text-2xl font-bold py-4">TLPay</div>
 
-        <div className="flex flex-col gap-6 text-gray-600 cursor-pointer pt-4 py-2">
+        <div className="flex flex-col text-gray-600 cursor-pointer">
           <NavLink to="myqrcodes">
             {({ isActive }) => (
               <div
@@ -59,26 +59,9 @@ export default function Sidebar({ toggleSidebar }) {
               </div>
             )}
           </NavLink>
-
-          <NavLink to="analytics">
-            {({ isActive }) => (
-              <div
-                className={`flex gap-2 items-center px-4 py-2 ${
-                  isActive
-                    ? "bg-blue-100 text-blue-700 rounded"
-                    : "text-gray-600"
-                }`}
-              >
-                <span className="text-3xl">
-                  <FiBarChart2 />
-                </span>
-                <p>Analytics</p>
-              </div>
-            )}
-          </NavLink>
         </div>
 
-        <div className="border-b p-0 border-gray-200 py-4 "></div>
+        <div className="border-b border-gray-200 py-4"></div>
 
         <NavLink to="profile">
           {({ isActive }) => (
@@ -119,20 +102,35 @@ export default function Sidebar({ toggleSidebar }) {
             Try new experiences with premium features on TL Pay.
           </p>
 
-          <button className="border-0 bg-white text-black rounded px-1 py-2 font-medium cursor-pointer">
-            <NavLink to="price">Upgrade Plan</NavLink>
+          <button className="border-0 bg-white text-black rounded px-1 py-2 font-medium">
+            <span>Anticipate !!!</span>
           </button>
         </div>
 
         <ul className="">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 cursor-pointer font-medium text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded"
+            className="flex items-center gap-2 cursor-pointer font-medium hover:text-red-400 bg-red-400 text-white px-4 py-2 rounded hover:bg-white"
           >
             <LogOut size={18} /> Log Out
           </button>
         </ul>
       </div>
+
+      {/* <NavLink to="analytics">
+        {({ isActive }) => (
+          <div
+            className={`flex gap-2 items-center px-4 py-2 ${
+              isActive ? "bg-blue-100 text-blue-700 rounded" : "text-gray-600"
+            }`}
+          >
+            <span className="text-3xl">
+              <FiBarChart2 />
+            </span>
+            <p>Analytics</p>
+          </div>
+        )}
+      </NavLink> */}
     </>
   );
 }

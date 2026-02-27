@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { getUser, loginUser } from "../store/features/auth-thunks";
 import PasswordField from "../components/PasswordField";
 import { useAuth } from "../hooks/useAuth";
@@ -12,8 +12,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
 
-  const { user, error, loading} = useAuth()
-
+  const { user, error, loading } = useAuth();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -22,7 +21,7 @@ const SignIn = () => {
       return toast.error("Email should not be empty");
     }
 
-    if (!password)  {
+    if (!password) {
       return toast.error("Password should not be empty");
     }
 
@@ -32,11 +31,9 @@ const SignIn = () => {
       dispatch(getUser());
       navigate("/home", { replace: true });
     }
-    
   }
 
-    if (loading) return <div>Loading...</div>;
-
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -48,14 +45,15 @@ const SignIn = () => {
             Welcome back! Please enter your details
           </span>
           <form onSubmit={handleLogin}>
-            {error && (
+            {/* {error && (
               <div style={{ color: "tomato", fontSize: "16px" }}>{error}</div>
-            )}
+            )} */}
 
             <div className="py-4">
               <span className="mb-2 text-md">Email</span>
               <input
                 type="email"
+                placeholder="Enter your email"
                 className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -65,9 +63,14 @@ const SignIn = () => {
             <PasswordField password={password} setPassword={setpassword} />
 
             <div className="flex justify-between w-full py-4">
-              <div className="mr-24">
-                <input type="checkbox" name="ch" id="ch" className="mr-2" />
-                <span className="text-md">Remember me</span>
+              <div>
+                <p className=" text-gray-600 text-center">
+                  <NavLink
+                    to="/"
+                  >
+                    Go Back?
+                  </NavLink>
+                </p>
               </div>
               <span className="font-bold text-md">
                 <Link to="/auth/forgot-password"> Forgot password</Link>
@@ -80,10 +83,10 @@ const SignIn = () => {
               Sign in
             </button>
           </form>
-          <button className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-blue-600 hover:text-white">
-            {/* <img src="google.svg" alt="img" className="w-6 h-6 inline mr-2" /> */}
+          {/* <button className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-blue-600 hover:text-white">
+            <img src="google.svg" alt="img" className="w-6 h-6 inline mr-2" />
             Sign in with Google
-          </button>
+          </button> */}
           <div className=" text-gray-400 flex gap-2 items-center justify-center">
             <span>Don't have an account?</span>
             <span className="font-bold text-black">

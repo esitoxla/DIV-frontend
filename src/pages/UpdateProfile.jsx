@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { api } from "../config/axios";
 import { setUser } from "../store/features/authSlice";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export default function UpdateProfile() {
   const dispatch = useDispatch();
@@ -49,14 +49,14 @@ export default function UpdateProfile() {
         headers: { "Content-Type": "application/json" },
       });
 
-      alert("Profile updated!");
+      toast.success("Profile updated!");
       console.log("Updated user:", res.data.user);
 
       setFormData(res.data.user);
       dispatch(setUser(res.data.user));
       navigate("/dashboard/profile");
     } catch (error) {
-      alert(error.response?.data?.message || "Update failed");
+      toast.error(error.response?.data?.message || "Update failed");
       console.error(err);
     }
   };

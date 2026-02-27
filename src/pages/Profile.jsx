@@ -41,7 +41,7 @@ export default function Profile() {
   }, [user, dispatch]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-[3rem] bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center py-[3rem] bg-gray-100">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg w-[80%]  h-full flex flex-col gap-6 overflow-hidden p-6">
         {/* Header */}
         <div className="w-full flex relative flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -58,7 +58,7 @@ export default function Profile() {
               <ProfileUpload />
 
               {/* Socials (unchanged) */}
-              <div className="flex gap-4 justify-center sm:justify-start">
+              {/* <div className="flex gap-4 justify-center sm:justify-start">
                 <button className="text-blue-600">
                   <FaFacebook size={22} />
                 </button>
@@ -74,7 +74,7 @@ export default function Profile() {
                 <button>
                   <FcGoogle size={22} />
                 </button>
-              </div>
+              </div> */}
             </div>
 
             {/* Form */}

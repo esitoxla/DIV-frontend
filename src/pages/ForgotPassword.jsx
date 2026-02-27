@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { forgotPassword } from '../store/features/auth-thunks';
+import toast from 'react-hot-toast';
+
 
 export default function ForgotPassword() {
 
@@ -14,7 +16,7 @@ export default function ForgotPassword() {
         e.preventDefault();
 
         dispatch(forgotPassword({ email }));
-        alert("Reset link is sent to your email. Thank you!");
+        toast.success("Reset link is sent to your email. Thank you!");
     }
 
 

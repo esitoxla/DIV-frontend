@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { changePassword, logoutUser } from "../store/features/auth-thunks";
 import { useAuth } from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 export default function ChangePassword() {
     const navigate = useNavigate()
@@ -19,23 +20,23 @@ export default function ChangePassword() {
         e.preventDefault()
 
         if (!oldPassword) {
-          return alert("password cannot be empty");
+          return toast.error("password cannot be empty");
         }
 
         if (!newPassword) {
-          return alert("new password cannot be empty");
+          return toast.error("new password cannot be empty");
         }
 
         if (!confirmNewPassword) {
-          return alert("confirm new password cannot be empty");
+          return toast.error("confirm new password cannot be empty");
         }
 
         if (newPassword !== confirmNewPassword) {
-          return alert("password and confirm password must match");
+          return toast.error("password and confirm password must match");
         }
 
         dispatch(changePassword({ oldPassword, newPassword }));
-        alert("Password changed successfully!");
+        toast.success("Password changed successfully!");
         dispatch(logoutUser());
         navigate("/auth/login", { replace: true });
     }

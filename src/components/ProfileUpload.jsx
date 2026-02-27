@@ -3,6 +3,7 @@ import profile from "../assets/images/profile.1.png";
 import { useDispatch, useSelector } from "react-redux";
 import { api } from "../config/axios";
 import { setUser } from "../store/features/authSlice";
+import toast from "react-hot-toast";
 
 
 export default function ProfileUpload() {
@@ -34,6 +35,7 @@ export default function ProfileUpload() {
           });
           console.log(res.data.user);
           dispatch(setUser(res.data.user))
+          toast.success("Profile upload success")
           // you could dispatch Redux action here if needed
         } catch (error) {
           console.error(error);

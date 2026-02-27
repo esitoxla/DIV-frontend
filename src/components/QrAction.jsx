@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router";
 
 export default function QrAction() {
   return (
@@ -13,12 +14,17 @@ export default function QrAction() {
         </div>
         <div className="">
           <div className="flex gap-2 items-center justify-center">
-            <button className="border-0 rounded-sm lg:px-6 py-3 bg-white text-black font-medium mr-5">
-              Generate Now
-            </button>
-            <button className="border border-white rounded-sm lg:px-6 py-3 font-medium">
-              Upgrade to Pro
-            </button>
+            <NavLink to="/auth/login">
+              <button className="border-0 rounded-sm lg:px-6 py-3 bg-white text-black font-medium mr-5 cursor-pointer">
+                Generate Now
+              </button>
+            </NavLink>
+
+            <NavLink to="/price">
+              <button className="border border-white rounded-sm lg:px-6 py-3 font-medium cursor-pointer">
+                Upgrade to Pro
+              </button>
+            </NavLink>
           </div>
         </div>
       </div>

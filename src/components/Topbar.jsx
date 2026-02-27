@@ -11,7 +11,7 @@ export default function Topbar({ toggleSidebar }) {
   const { user } = useSelector((state) => state.auth)
 
   return (
-    <div className="flex justify-between items-center w-full border-b border-gray-200 py-2 px-4">
+    <div className="flex justify-between items-center w-full border-b-2 border-gray-400 py-2 px-4">
       <div className="flex gap-6 items-center">
         <div onClick={toggleSidebar} className="cursor-pointer">
           <MdMenu className="text-2xl" />
@@ -22,7 +22,7 @@ export default function Topbar({ toggleSidebar }) {
             <LiaCrownSolid />
           </span>
           <div className="font-medium">
-            <NavLink to="price">Upgrade Plan</NavLink>
+            <span>Anticipate !!!</span>
           </div>
         </button>
       </div>
