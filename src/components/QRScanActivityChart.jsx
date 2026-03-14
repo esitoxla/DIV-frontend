@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const QRScanActivityChart = () => {
+const QrScanActivityChart = () => {
   const [sortBy, setSortBy] = useState("QR Code");
   const [timeRange, setTimeRange] = useState("Last 12 days");
 
@@ -102,4 +102,4 @@ const QRScanActivityChart = () => {
   );
 };
 
-export default QRScanActivityChart;
+export default QrScanActivityChart;
