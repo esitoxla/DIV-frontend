@@ -25,6 +25,7 @@ const data = [
   { date: "Apr 12", scans: 140 },
 ];
 
+
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
