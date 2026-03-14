@@ -9,7 +9,6 @@ export default function QrFolder() {
        <AnalyticsIntro/>
         <QrScanActivityChart/>
         <DonutCharts/>
-        
     </div>
   )
 }
